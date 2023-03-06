@@ -1,0 +1,83 @@
+<div class="row clearfix">
+        <div class="col-md-12 column">
+            <form name="form_value" method="POST" id="form_value">
+                <label>Name</label>
+                <input type="text" id="name" name="name" class="form-control input-md" style="margin:20px;width:300px;" autocomplete="off">
+                <input type="submit" id="calculateTotalSubmit"  name="calculate-total-submit" value="Submit">
+        </div> 
+            </form><br/><br/>
+            <div class="result" id="result" >Your Age is: </div></p>
+</div>
+
+<script>
+require(['jquery'],function(){
+    jQuery(document).ready(function() {
+        jQuery(".result").hide();
+        jQuery("#form_value").submit(function(){
+            
+            var name = jQuery("input[name='name']").val();
+            var url = "<?php echo $block->getUrl() . 'ajax/api/call/' ?>";
+            jQuery.ajax({
+            url: url,
+            type: "POST",
+            dataType: 'json',
+            data: {name:name},
+            showLoader: true,
+            cache: false,
+            success: function(response){
+                 console.log(response);
+                 console.log("success");
+                 jQuery(".result").show();
+                 jQuery(".result").text(response.age);
+                // $(".result").val(response.response);
+            },
+            error: function(response){
+                console.log("error");
+                console.log(response.age);
+                jQuery("#result").show();
+                jQuery("#result").text(response.responseText);
+                // $(".result").val(response.response);
+            }
+        });
+        return false;
+        });
+    });
+});
+</script>
+<!-- <script>
+require(['jquery'], function($) {
+    jQuery(document).ready(function() {
+        $('#form_value').submit(function(){
+            var name = jQuery("#name").val();
+            var url = "<?php echo $block->getUrl() . 'ajax/api/call/' ?>";
+                try {
+                console.log("Okay");
+                    jQuery.ajax({
+                        url : url,
+                        dataType : 'json',
+                        data: { 'name' :  name  },
+                        type : 'POST',
+                        showLoader: true,
+                        cache: false,
+                        success : function(data) {
+                            console.log("success");
+                            console.log(data);
+                            $("#result").html(data);
+                            // $.each(data, function(index, value){
+                                
+                            //       $("#result").append(value + '<br>');
+                            // });
+                            // jQuery('#search-results').html();
+                        },
+                        error : function(data) {
+                            console.log(data);
+                            console.log("error");
+                            // $("#result").html(data);
+                    }
+                });
+                }catch (e) {
+                }
+        });        
+    });
+});
+</script> -->
